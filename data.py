@@ -3,7 +3,6 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from typing import Tuple
 
-
 #data_path = './data'
 
 def load_MNIST(data_path:str='./data', normalise:bool=True)->Tuple[DataLoader, DataLoader]:

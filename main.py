@@ -4,6 +4,9 @@ from data import load_MNIST
 from autoencoder import myAutoencoder
 from train import train
 
+import ssl 
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 def main():
 
@@ -16,12 +19,12 @@ def main():
     learning_rate = 1e-2
     optimizer = optim.SGD(params=model.parameters(), lr=learning_rate)
 
-    train(
-        n_epochs=n_epochs,
-        model=model,
-        optimizer=optimizer,
-        train_loader=train_loader
-    )
+    # train(
+    #     n_epochs=n_epochs,
+    #     model=model,
+    #     optimizer=optimizer,
+    #     train_loader=train_loader
+    # )
 
 
 

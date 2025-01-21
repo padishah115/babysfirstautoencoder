@@ -17,6 +17,7 @@ class myAutoencoder(nn.Module):
         self.central_chans = central_chans
 
         self.input_layer = nn.Linear(in_features=self.outer_chans, out_features=self.central_chans)
+        self.central_layer = nn.Linear(in_features=self.central_chans, out_features=self.central_chans)
         self.output_layer = nn.Linear(in_features=self.central_chans, out_features=self.outer_chans)
         self.activation = nn.Sigmoid()
 
@@ -25,6 +26,8 @@ class myAutoencoder(nn.Module):
 
 
     def forward(self, x):
-        out = self.activation(self.output_layer(self.input_layer(x)))
+        out = self.input_layer(x)
+        out = self.central_layer(x)
+        out = self.output_layer(x)
         return out
     
