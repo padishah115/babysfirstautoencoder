@@ -49,8 +49,8 @@ def load_MNIST(data_path:str='./data', normalise:bool=True)->Tuple[DataLoader, D
             ])
         )
 
-        train_loader = DataLoader(mnist_norm)
-        val_loader = DataLoader(mnist_val_norm)
+        train_loader = DataLoader(mnist_norm, batch_size=64, shuffle=False)
+        val_loader = DataLoader(mnist_val_norm, batch_size=64, shuffle=False)
 
         return train_loader, val_loader
 

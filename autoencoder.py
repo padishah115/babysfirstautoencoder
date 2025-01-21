@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-class myAutoencoder(nn.Module):
+class Autoencoder(nn.Module):
     """
     Autoencoder class for processing images from the MNIST database. Requires flattened 1D image vector.
 
@@ -12,6 +12,15 @@ class myAutoencoder(nn.Module):
     """
 
     def __init__(self, outer_chans=784, central_chans=16):
+        """
+        Initialise the Autoencoder class for training on the MNIST database of handwritten digits.
+
+        Attributes:
+            self.outer_chans (int): The number of input features at the initial FC layer, and the number of output features at the final FC layer.
+            self.central_chans (int): The number of input and output features at the central layer.
+        """
+
+
         super().__init__()
         self.outer_chans = outer_chans
         self.central_chans = central_chans
@@ -25,9 +34,19 @@ class myAutoencoder(nn.Module):
         self.loss_fn = nn.BCELoss()
 
 
-    def forward(self, x):
-        out = self.input_layer(x)
-        out = self.central_layer(x)
-        out = self.output_layer(x)
+    def forward(self, x:torch.Tensor)->torch.Tensor:
+        """
+        Execute the forwards pass through the network.
+
+        Args:
+            x (torch.Tensor): Input tensor from the MNIST database, of shape (batch size, 784)
+
+        Returns:
+            out (torch.Tensor): The output of the network (i.e. best attempt to generate a similar image)
+        """
+
+        out = self.activation(self.input_layer(x))
+        out = self.activation(self.central_layer(out))
+        out = self.activation(self.output_layer(out))
         return out
     

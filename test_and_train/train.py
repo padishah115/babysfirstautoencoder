@@ -15,14 +15,17 @@ def train(n_epochs:int, model:nn.Module, optimizer:optim.Optimizer, train_loader
 
     """
 
-    for epoch in range(1, epoch+1):
+    for epoch in range(1, n_epochs+1):
         
         loss_train = 0.0
         
         for imgs, labels in train_loader:
+
+            batch_size = imgs.shape[0]
+            img_batch = imgs.view(batch_size, -1)
             
-            outputs = model(imgs)
-            loss = model.loss_fn(outputs, imgs) #calculate the BCE Loss
+            outputs = model(img_batch)
+            loss = model.loss_fn(outputs, img_batch) #calculate the BCE Loss
 
             optimizer.zero_grad() #prevent gradient accumulation
             loss.backward() #backpropagation on the model
