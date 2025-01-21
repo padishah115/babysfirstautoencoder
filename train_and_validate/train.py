@@ -22,10 +22,10 @@ def train(n_epochs:int, model:nn.Module, optimizer:optim.Optimizer, train_loader
         for imgs, labels in train_loader:
 
             batch_size = imgs.shape[0]
-            img_batch = imgs.view(batch_size, -1)
+            inputs = imgs.view(batch_size, -1)
             
-            outputs = model(img_batch)
-            loss = model.loss_fn(outputs, img_batch) #calculate the BCE Loss
+            outputs = model(inputs)
+            loss = model.loss_fn(outputs, inputs) #calculate the BCE Loss
 
             optimizer.zero_grad() #prevent gradient accumulation
             loss.backward() #backpropagation on the model

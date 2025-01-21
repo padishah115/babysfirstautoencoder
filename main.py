@@ -6,7 +6,7 @@ import torch
 import torch.optim as optim
 from data import load_MNIST
 from autoencoder import Autoencoder
-from test_and_train.train import train
+from train_and_validate.train import train
 
 
 #Prevent access errors when trying to load the MNIST database

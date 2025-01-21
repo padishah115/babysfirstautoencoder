@@ -6,7 +6,7 @@ from data import load_MNIST
 
 #Need to think a little more about what I should be doing with this.
 
-def test(model:nn.Module, val_loader:DataLoader, generation_no:int)->torch.Tensor:
+def validate(model:nn.Module, val_loader:DataLoader)->float:
     """
     Tests the output of the autoencoder.
 
@@ -16,24 +16,28 @@ def test(model:nn.Module, val_loader:DataLoader, generation_no:int)->torch.Tenso
         generation_no (int): The number of images we want the model to generate.
 
     Returns:
-        output (torch.Tensor): The generated output in tensor form.
+        mean_val_loss: The total loss across the validation set, divided by the number of images in the validation set.
 
     """
 
-    output_list = []
+    loss_val = 0.0
+    total = 0
 
     with torch.no_grad():
         for val_images, _ in val_loader:
-            no_per_batch = int(generation_no/len(val_images))
 
-            for img in val_images[:no_per_batch]:
-                output = model(img)
+            batch_size = val_images.shape[0] #get the size of the batch.
+            total += batch_size
 
+            inputs = val_images.view(batch_size, -1)
+            
+            outputs = model(inputs)
+            loss_val += model.loss_fn(outputs, inputs)
 
-        # image = image.view(-1, 784)
-        # output = model(image)
-        # output_list.append(output)
+    mean_val_loss = loss_val / total
 
-    output_stack = torch.cat(output_list, dim=0)
+    return mean_val_loss
 
-    return output_stack
+            
+
+        
