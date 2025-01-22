@@ -7,7 +7,12 @@ from autoencoder import Autoencoder
 from data import load_MNIST
 from train_and_validate.validate import validate
 
-def main(model_path:str="./trained_models/autoencoder.pt"):
+def load_and_validate(model_path:str="./trained_models/autoencoder.pt"):
+    """
+    
+    Args:
+        model_path (str): The path to the model which we want to load
+    """
 
     loaded_model = Autoencoder()
     loaded_model.load_state_dict(torch.load(model_path))
@@ -24,7 +29,3 @@ def main(model_path:str="./trained_models/autoencoder.pt"):
         )
     
     print(mean_val_loss.detach())
-
-
-if __name__ == "__main__":
-    main()

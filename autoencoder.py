@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class Autoencoder(nn.Module):
     """
@@ -12,41 +13,19 @@ class Autoencoder(nn.Module):
     """
 
     def __init__(self, outer_chans=784, central_chans=16):
-        """
-        Initialise the Autoencoder class for training on the MNIST database of handwritten digits.
-
-        Attributes:
-            self.outer_chans (int): The number of input features at the initial FC layer, and the number of output features at the final FC layer.
-            self.central_chans (int): The number of input and output features at the central layer.
-        """
-
-
         super().__init__()
-        self.outer_chans = outer_chans
-        self.central_chans = central_chans
+        self.outer_chans = outer_chans #Number of pixels in flattened image tensor
+        self.central_chans = central_chans #Number of channels in the central layer
 
-        self.input_layer = nn.Linear(in_features=self.outer_chans, out_features=self.central_chans)
-        self.central_layer = nn.Linear(in_features=self.central_chans, out_features=self.central_chans)
-        self.output_layer = nn.Linear(in_features=self.central_chans, out_features=self.outer_chans)
-        self.activation = nn.Sigmoid()
+        self.encoder = nn.Linear(in_features=self.outer_chans, out_features=self.central_chans)
+        self.decoder = nn.Linear(in_features=self.central_chans, out_features=self.outer_chans)
 
         #use binary cross entropy loss function for autoencoder training.
-        self.loss_fn = nn.BCELoss()
+        self.criterion = nn.MSELoss()
 
 
     def forward(self, x:torch.Tensor)->torch.Tensor:
-        """
-        Execute the forwards pass through the network.
-
-        Args:
-            x (torch.Tensor): Input tensor from the MNIST database, of shape (batch size, 784)
-
-        Returns:
-            out (torch.Tensor): The output of the network (i.e. best attempt to generate a similar image)
-        """
-
-        out = self.activation(self.input_layer(x))
-        out = self.activation(self.central_layer(out))
-        out = self.activation(self.output_layer(out))
-        return out
+        x = F.relu(self.encoder(x)) #Use the relu activation function for the output from the encoder
+        x = F.sigmoid(self.decoder(x)) #Use the sigmoid activation function on the final images as they are normalized to between 0, 1
+        return x
     

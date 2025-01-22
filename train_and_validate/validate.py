@@ -2,11 +2,13 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
+from autoencoder import Autoencoder
+
 from data import load_MNIST
 
 #Need to think a little more about what I should be doing with this.
 
-def validate(model:nn.Module, val_loader:DataLoader)->float:
+def validate(model:Autoencoder, val_loader:DataLoader)->float:
     """
     Tests the output of the autoencoder.
 
@@ -32,7 +34,7 @@ def validate(model:nn.Module, val_loader:DataLoader)->float:
             inputs = val_images.view(batch_size, -1)
             
             outputs = model(inputs)
-            loss_val += model.loss_fn(outputs, inputs)
+            loss_val += model.criterion(outputs, inputs)
 
     mean_val_loss = loss_val / total
 
