@@ -35,8 +35,9 @@ def train(n_epochs:int, model:Autoencoder, optimizer:optim.Optimizer, train_load
             optimizer.step()
             
             loss_train += loss.item()
-
+        
+        mean_batch_loss = loss_train/len(train_loader) 
         if epoch == 1 or epoch % 10 == 0:
-            print(f"Mean batch loss at epoch {epoch}", loss_train/len(train_loader)) #print the batch-normalised loss at epoch 1 and every 10th epoch
+            print(f"Mean batch loss at epoch {epoch}: {mean_batch_loss:.4f}") #print the batch-normalised loss at epoch 1 and every 10th epoch
 
     
