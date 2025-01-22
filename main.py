@@ -18,7 +18,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 def main():
 
     #The different quantities of central channels that we want to use
-    chans = [16, 32, 48, 64]
+    chans = [8, 16, 32, 48, 64]
 
     data_path = './data'
     train_loader, val_loader = load_MNIST(data_path=data_path, batch_size=256) 
